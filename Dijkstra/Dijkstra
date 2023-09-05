@@ -1,0 +1,26 @@
+#include <queue>
+#include <vector>
+#define ii pair<int, int>
+#define ll long long
+
+int n, m;
+vector<vector<pair<ll, ll>>> graph;
+vector<ii > parent;
+vector<ll> cost;
+
+void dijkstra(int src = 1) {
+    priority_queue<pair<long long, long long>, vector<pair<long long, long long> >, greater<pair<long long, long long>>> pq;
+    pq.emplace(0, src); // cost - node
+    cost[src] = 0;
+    while (!pq.empty()) {
+        auto [prevCost, curr] = pq.top();
+        pq.pop();
+        if (prevCost != cost[curr]) continue;
+        for (auto [child, w]: graph[curr])
+            if (cost[child] > prevCost + w) {
+                cost[child] = prevCost + w;
+                pq.emplace(cost[child], child);
+                parent[child] = {curr, w};
+            }
+    }
+}
